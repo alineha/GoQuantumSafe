@@ -5,6 +5,8 @@ using OpenQuantumSafe;
 using System.Security.Cryptography.X509Certificates;
 using System.Collections;
 
+namespace quantum;
+
 [Tool]
 public partial class goquantumsafe : EditorPlugin
 {
