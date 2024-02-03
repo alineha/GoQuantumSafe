@@ -5,6 +5,9 @@ using OpenQuantumSafe;
 using System.Security.Cryptography.X509Certificates;
 using System.Collections;
 using System.Text;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using Newtonsoft.Json;
 
 namespace quantum;
 
@@ -39,6 +42,31 @@ public partial class goquantumsafe : EditorPlugin
     public void Decapsulate(KEM kem, byte[] cipherText, out byte[] sharedSecret, byte[] privateKey)
     {
         kem.decaps(out sharedSecret, cipherText, privateKey);
+    }
+
+    // Convert an object to a byte array
+    public byte[] ObjectToByteArray(Object obj)
+    {
+        string str = JsonConvert.SerializeObject(obj);
+        return Encoding.ASCII.GetBytes(str);
+    }
+
+    // Convert a byte array to an Object
+    public Object ByteArrayToObject(byte[] arrBytes)
+    {
+        string str = Encoding.ASCII.GetString(arrBytes);
+        return JsonConvert.DeserializeObject<Object>(str);
+    }
+
+    public void PadToMultipleOf(ref byte[] src, int pad)
+    {
+        int len = (src.Length + pad - 1) / pad * pad;
+        Array.Resize(ref src, len);
+    }
+
+    public void Unpad(ref byte[] src, int unpad)
+    {
+        Array.Resize(ref src, unpad);
     }
 }
 #endif
